@@ -14,7 +14,7 @@ const CallToAction = () => {
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4 ">
-          <button className="bg-[#a72f2f] text-white text-lg font-semibold px-6 py-4 rounded-none relative hover:scale-105 transition ">
+          <button className="bg-[#a72f2f] text-white text-lg font-semibold px-6 py-4 rounded-none relative hover:scale-105 transition " >
           S'inscrire maintenant
           </button>
 

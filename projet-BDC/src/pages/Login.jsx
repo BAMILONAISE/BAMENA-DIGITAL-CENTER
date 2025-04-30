@@ -3,19 +3,22 @@ import { login, fetchMe } from '../api'; // ⬅️ On importe bien login ET fetc
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
+
+    // États pour le formulaire
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); // ⬅️ pour le chargement
 
+    // Fonction appelée à la soumission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true); // On commence le chargement
 
     try {
-      // 1. Connexion
+      // 1. Connexion (Appel à la fonction login() du service)
       await login({ email, password });
 
       // 2. Si connexion OK, récupérer l'utilisateur connecté

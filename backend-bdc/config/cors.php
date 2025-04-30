@@ -17,22 +17,27 @@ return [
 
 
 
-'paths' => ['api/*', 'sanctum/csrf-cookie'],
+ // On autorise les appels aux routes API + route csrf-cookie de Sanctum
+ 'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-'allowed_methods' => ['*'],
+ // Autorise toutes les méthodes HTTP (GET, POST, etc.)
+ 'allowed_methods' => ['*'],
 
-'allowed_origins' => [
-    'http://localhost:5173',
-],
+ // Le front React autorisé (le port 5173 est utilisé par Vite)
+ 'allowed_origins' => ['http://localhost:5173'],
 
 'allowed_origins_patterns' => [],
 
+// Autorise tous les en-têtes (headers)
 'allowed_headers' => ['*'],
 
 'exposed_headers' => [],
 
 'max_age' => 0,
 
-'supports_credentials' => true, // << OBLIGATOIREMENT true
+ // Nécessaire pour permettre l'envoi des cookies (Sanctum fonctionne avec des cookies)
+ 'supports_credentials' => true,  // << OBLIGATOIREMENT true
 
 ];
+
+

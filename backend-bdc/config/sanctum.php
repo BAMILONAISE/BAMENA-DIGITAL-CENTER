@@ -62,6 +62,12 @@ return [
     'middleware' => [
         'verify_csrf_token' => App\Http\Middleware\VerifyCsrfToken::class,
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
+            
+        // Ce paramètre indique les domaines front autorisés à envoyer des cookies à Laravel.
+        // Ici, on autorise React en développement avec Vite (localhost:5173)
+        'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', 'localhost:5173')),
+
+
     ],
 
 ];

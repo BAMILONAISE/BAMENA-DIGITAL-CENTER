@@ -6,6 +6,7 @@ use App\Models\Cours;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class CoursController extends Controller
 {
     // Ajouter un cours
@@ -20,7 +21,7 @@ class CoursController extends Controller
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'video_url' => 'required|url',
+            'video_url' => 'required|url|file|mimes:mp4,mov,avi|max:20000',
         ]);
 
         // Créer le cours

@@ -1,4 +1,4 @@
-import AjouterCours from '../../components/AjouterCours';
+import AjouterCours from '../components/AjouterCours';
 
 function PageAjoutCours() {
   return (

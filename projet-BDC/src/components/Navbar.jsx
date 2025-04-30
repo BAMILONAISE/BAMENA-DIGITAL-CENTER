@@ -23,8 +23,8 @@ const Navbar = () => {
           
           {/* Boutons de connexion - Version desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <a href="#" className="text-gray-700 hover:text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-2 font-medium">Se connecter</a>
-            <a href="#" className="bg-[#a52a2a] text-white px-4 py-2 rounded-md hover:border text-center hover:border-[#a52a2a] hover:bg-white hover:text-[#a52a2a] transition duration-300 font-medium"> S'inscrire   </a>
+            <a href="/login" className="text-gray-700 hover:text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-2 font-medium">Se connecter</a>
+            <a href="/register" className="bg-[#a52a2a] text-white px-4 py-2 rounded-md hover:border text-center hover:border-[#a52a2a] hover:bg-white hover:text-[#a52a2a] transition duration-300 font-medium"> S'inscrire   </a>
           </div>
           
           {/* Bouton menu mobile */}
@@ -50,13 +50,13 @@ const Navbar = () => {
         <div className="md:hidden bg-white pb-3 px-4">
           <div className="flex flex-col space-y-2">
             <a href="#" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">Accueil</a>
-            <a href="#" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">Cours</a>
-            <a href="#" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">À propos</a>
-            <a href="#" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">Contact</a>
+            <a href="/courses" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">Cours</a>
+            <a href="/about" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">À propos</a>
+            <a href="/contact" className="text-gray-700 hover:text-[#a52a2a] px-3 py-2 font-medium border-b border-gray-100 text-center">Contact</a>
           </div>
           <div className="mt-4 pt-4 border-t border-gray-200">
-            <a href="#" className="block text-gray-700 hover:text-[#a52a2a] hover:bg-[#a52a2a] hover:text-white border border-[#a52a2a] rounded-md px-3 py-2 font-medium text-center">Se connecter</a>
-            <a href="#" className="block mt-2 bg-[#a52a2a] text-white px-4 py-2 rounded-md hover:bg-white hover:text-gray-700  hover:border hover:border-[#a52a2a] transition duration-300 text-center font-medium">S'inscrire</a>
+            <a href="/login" className="block text-gray-700 hover:text-[#a52a2a] hover:bg-[#a52a2a] hover:text-white border border-[#a52a2a] rounded-md px-3 py-2 font-medium text-center">Se connecter</a>
+            <a href="/register" className="block mt-2 bg-[#a52a2a] text-white px-4 py-2 rounded-md hover:bg-white hover:text-gray-700  hover:border hover:border-[#a52a2a] transition duration-300 text-center font-medium">S'inscrire</a>
           </div>
         </div>
       )}

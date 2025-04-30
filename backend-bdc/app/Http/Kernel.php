@@ -41,10 +41,16 @@ class Kernel extends HttpKernel
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            
+            // Ce middleware est crucial : il transforme les requêtes de React en requêtes "authentifiables"
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             'check.status' => \App\Http\Middleware\CheckUserStatus::class,
-         
+            'is_admin' => \App\Http\Middleware\IsAdmin::class,
+            
+
+            
+
 
         ],
     ];
