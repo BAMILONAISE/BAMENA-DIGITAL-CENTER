@@ -1,29 +1,43 @@
 import React, { useState } from "react";
-import QuartierSelector from "../components/QuartierSelector";
+import { Link, useNavigate } from "react-router-dom";
+import QuartierSelector from "./QuartierSelector";
 import axios from "axios";
+import { FaUser, FaEnvelope, FaCalendarAlt, FaMapMarkerAlt, FaLock, FaInfoCircle, FaPhone } from "react-icons/fa";
+import { useAuth } from '../context/AuthContext';
+
+// Définir l'URL de base de l'API
+const API_URL = 'http://127.0.0.1:8000';
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { updateUser } = useAuth();
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [dateNaissance, setDateNaissance] = useState("");
   const [quartier, setQuartier] = useState("");
   const [quartierAutre, setQuartierAutre] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setErrors({});
+    setLoading(true);
+    setSuccess("");
 
     const finalQuartier = quartier === "autre" ? quartierAutre : quartier;
 
     try {
-      const response = await axios.post("http://localhost:8000/api/register", {
+      const response = await axios.post(`${API_URL}/api/register`, {
         prenom,
         nom,
         email,
+        contact,
         password,
         password_confirmation: passwordConfirmation,
         date_naissance: dateNaissance,
@@ -31,125 +45,220 @@ const Register = () => {
       });
 
       console.log("Inscription réussie", response.data);
-      // Rediriger ou informer l’utilisateur ici
+      
+      // Stocker le token d'authentification
+      if (response.data.access_token) {
+        localStorage.setItem('token', response.data.access_token);
+        
+        // Mettre à jour les informations de l'utilisateur dans le contexte
+        await updateUser();
+        
+        // Rediriger immédiatement vers la page d'accueil
+        navigate('/');
+      } else {
+        // Si pas de token, rediriger vers la page de connexion
+        setSuccess("Inscription réussie ! Veuillez vous connecter.");
+        setTimeout(() => {
+          navigate('/login');
+        }, 1500);
+      }
     } catch (error) {
+      setLoading(false);
       if (error.response && error.response.data.errors) {
         setErrors(error.response.data.errors);
+      } else {
+        setErrors({ general: ["Une erreur s'est produite lors de l'inscription."] });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="  bg-[url('/dots-bg.png')] bg-cover  items-center justify-center  px-5 py-3  bg-white p-5 rounded-md shadow-md max-w-2xl mx-auto" style={{width:'40%'}}>
-        {/* Avatar initials */}
-        <div className="w-12 h-12 rounded-full bg-red-700 mx-auto flex items-center justify-center text-white font-bold text-xl mb-1">
-          BD
-        </div>
-
-        {/* Title */}
-        <h2 className="text-center text-2xl font-bold text-red-700 mb-1">Créer un compte</h2>
-        <p className="text-center text-sm text-gray-600 mb-8">
-          Inscrivez-vous pour accéder à nos cours et formations
-        </p>
+    <div className="bg-white shadow-md rounded-lg overflow-hidden max-w-md mx-auto">
+      {/* En-tête simplifié */}
+      <div className="bg-[#a52a2a] px-4 py-3">
+        <h2 className="text-xl font-semibold text-white text-center">Créer un compte</h2>
+      </div>
       
-      <form onSubmit={handleRegister}>
-        <div className="flex justify-between">
-
-        {/* Prénom */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black px-1 ">Prénom</label>
-          <input
-            type="text"
-            className="w-full  p-1 rounded border border-gray-400 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
-          />
-          {errors.prenom && <p className="text-red-500 text-sm">{errors.prenom[0]}</p>}
-        </div>
-
-        {/* Nom */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black px-1">Nom</label>
-          <input
-            type="text"
-            className="w-full  p-1 rounded border border-gray-400 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-          />
-          {errors.nom && <p className="text-red-500 text-sm">{errors.nom[0]}</p>}
-        </div>
-
-        </div>
-
-        {/* Email */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black px-1">Email</label>
-          <input
-            type="email"
-            className="w-full  p-1 rounded border border-gray-400 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email[0]}</p>}
-        </div>
-
-
-
-
-        {/* Quartier */}
-        <QuartierSelector
-          quartier={quartier}
-          setQuartier={setQuartier}
-          quartierAutre={quartierAutre}
-          setQuartierAutre={setQuartierAutre}
-        />
-        {errors.quartier && <p className="text-red-500 text-sm">{errors.quartier[0]}</p>}
-
-        {/* Date de naissance */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black px-1">Date de naissance</label>
-          <input
-            type="date"
-            className="w-full p-1 rounded border border-gray-400 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={dateNaissance}
-            onChange={(e) => setDateNaissance(e.target.value)}
-          />
-          {errors.date_naissance && <p className="text-red-500 text-sm">{errors.date_naissance[0]}</p>}
-        </div>
-
-        <div className="flex justify-between">
-
-        {/* Mot de passe */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black px-1">Mot de passe</label>
-          <input
-            type="password"
-            className="w-full  p-1 rounded border border-gray-400 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password[0]}</p>}
-        </div>
-
-        {/* Confirmation */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black px-1">Confirmation mot de passe</label>
-          <input
-            type="password"
-            className="w-full  p-1 rounded border border-gray-400 hover:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-          />
-        </div>
-        </div>
-        {/* Bouton */}
-        <button
-          type="submit"
-          className="w-full  font-medium bg-red-700 text-white py-1.5 rounded-md hover:bg-red-800 transition duration-300"
-        >
-          S'inscrire
-        </button>
-      </form>
+      {/* Formulaire */}
+      <div className="px-4 py-5">
+        {success && (
+          <div className="mb-4 text-green-600 text-sm">
+            {success}
+          </div>
+        )}
+        
+        {errors.general && (
+          <div className="mb-4 text-red-600 text-sm">
+            {errors.general[0]}
+          </div>
+        )}
+        
+        <form onSubmit={handleRegister} className="space-y-4">
+          {/* Prénom et Nom */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <div className="flex items-center mb-1">
+                <FaUser className="text-gray-400 mr-2" size={14} />
+                <span className="text-sm text-gray-600">Prénom</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Prénom"
+                value={prenom}
+                onChange={(e) => setPrenom(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                required
+              />
+              {errors.prenom && <p className="text-red-500 text-xs mt-1">{errors.prenom[0]}</p>}
+            </div>
+            
+            <div>
+              <div className="flex items-center mb-1">
+                <FaUser className="text-gray-400 mr-2" size={14} />
+                <span className="text-sm text-gray-600">Nom</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Nom"
+                value={nom}
+                onChange={(e) => setNom(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                required
+              />
+              {errors.nom && <p className="text-red-500 text-xs mt-1">{errors.nom[0]}</p>}
+            </div>
+          </div>
+          
+          {/* Email */}
+          <div>
+            <div className="flex items-center mb-1">
+              <FaEnvelope className="text-gray-400 mr-2" size={14} />
+              <span className="text-sm text-gray-600">Email</span>
+            </div>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+              required
+            />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email[0]}</p>}
+          </div>
+          
+          {/* Numéro de téléphone */}
+          <div>
+            <div className="flex items-center mb-1">
+              <FaPhone className="text-gray-400 mr-2" size={14} />
+              <span className="text-sm text-gray-600">Numéro de téléphone</span>
+            </div>
+            <input
+              type="tel"
+              placeholder="Numéro de téléphone"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+            />
+            {errors.contact && <p className="text-red-500 text-xs mt-1">{errors.contact[0]}</p>}
+          </div>
+          
+          {/* Date de naissance */}
+          <div>
+            <div className="flex items-center mb-1">
+              <FaCalendarAlt className="text-gray-400 mr-2" size={14} />
+              <span className="text-sm text-gray-600">Date de naissance</span>
+            </div>
+            <input
+              type="date"
+              value={dateNaissance}
+              onChange={(e) => setDateNaissance(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+              required
+            />
+            {errors.date_naissance && <p className="text-red-500 text-xs mt-1">{errors.date_naissance[0]}</p>}
+          </div>
+          
+          {/* Quartier */}
+          <div>
+            <div className="flex items-center mb-1">
+              <FaMapMarkerAlt className="text-gray-400 mr-2" size={14} />
+              <span className="text-sm text-gray-600">Quartier</span>
+            </div>
+            <QuartierSelector
+              quartier={quartier}
+              setQuartier={setQuartier}
+              quartierAutre={quartierAutre}
+              setQuartierAutre={setQuartierAutre}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+            />
+            {errors.quartier && <p className="text-red-500 text-xs mt-1">{errors.quartier[0]}</p>}
+          </div>
+          
+          {/* Mot de passe et confirmation */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <div className="flex items-center mb-1">
+                <FaLock className="text-gray-400 mr-2" size={14} />
+                <span className="text-sm text-gray-600">Mot de passe</span>
+              </div>
+              <input
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                required
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password[0]}</p>}
+            </div>
+            
+            <div>
+              <div className="flex items-center mb-1">
+                <FaLock className="text-gray-400 mr-2" size={14} />
+                <span className="text-sm text-gray-600">Confirmation</span>
+              </div>
+              <input
+                type="password"
+                placeholder="Confirmation"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                required
+              />
+            </div>
+          </div>
+          
+          {/* Bouton d'inscription */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full px-3 py-2 bg-[#a52a2a] text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a52a2a] ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+          >
+            {loading ? 'Inscription...' : 'S\'inscrire'}
+          </button>
+          
+          {/* Lien vers la connexion */}
+          <div className="text-center text-sm">
+            <p className="text-gray-600">
+              Déjà inscrit ?{' '}
+              <Link to="/login" className="text-[#a52a2a] hover:underline">
+                Se connecter
+              </Link>
+            </p>
+          </div>
+          
+          {/* Texte informatif */}
+          <div className="mt-4 text-xs text-gray-500 flex items-start">
+            <FaInfoCircle className="text-[#a52a2a] mr-2 mt-0.5 flex-shrink-0" />
+            <p>
+              En vous inscrivant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité. 
+              Vos données personnelles seront traitées conformément à la législation en vigueur.
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

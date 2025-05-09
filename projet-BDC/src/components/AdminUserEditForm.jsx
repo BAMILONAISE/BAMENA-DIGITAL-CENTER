@@ -1,6 +1,8 @@
 // components/AdminUserEditForm.jsx
 import { useState, useEffect } from 'react';
-// import api from '../services/api'; // ton fichier axios
+import axios from 'axios';
+
+const API_URL = 'http://127.0.0.1:8000';
 
 const AdminUserEditForm = ({ userId, onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -13,13 +15,41 @@ const AdminUserEditForm = ({ userId, onSuccess, onCancel }) => {
     statut: '',
   });
 
-  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   // Récupérer les données existantes de l'utilisateur
   useEffect(() => {
-    api.get(`/users/${userId}`).then((res) => {
-      setFormData(res.data);
-    });
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          setError('Vous devez être connecté pour modifier un utilisateur');
+          return;
+        }
+        
+        const response = await axios.get(`${API_URL}/api/users/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        setFormData(response.data);
+        setError('');
+      } catch (err) {
+        console.error('Erreur lors de la récupération des données utilisateur:', err);
+        setError(err.response?.data?.message || 'Erreur lors de la récupération des données');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   const handleChange = (e) => {
@@ -30,61 +60,173 @@ const AdminUserEditForm = ({ userId, onSuccess, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.put(`/users/${userId}`, formData);
-      onSuccess(); // pour recharger la liste ou fermer la modale
-    } catch (error) {
-      if (error.response && error.response.data.errors) {
-        setErrors(error.response.data.errors);
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        setError('Vous devez être connecté pour modifier un utilisateur');
+        return;
       }
+      
+      await axios.put(`${API_URL}/api/users/${userId}`, formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      onSuccess(); // pour recharger la liste et fermer le formulaire
+    } catch (err) {
+      console.error('Erreur lors de la mise à jour:', err);
+      
+      if (err.response?.data?.errors) {
+        setFieldErrors(err.response.data.errors);
+      } else {
+        setError(err.response?.data?.message || 'Erreur lors de la mise à jour');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 bg-white rounded shadow-md w-full max-w-lg mx-auto">
-      <h2 className="text-xl font-semibold mb-4 text-red-600">Modifier l'utilisateur</h2>
-
-      {['nom', 'prenom', 'email', 'quartier', 'date_naissance'].map((field) => (
-        <div key={field} className="mb-3">
-          <label className="block mb-1 capitalize">{field.replace('_', ' ')}</label>
-          <input
-            type={field === 'date_naissance' ? 'date' : 'text'}
-            name={field}
-            value={formData[field] || ''}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-          />
-          {errors[field] && <p className="text-red-500 text-sm">{errors[field][0]}</p>}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
+        <div className="bg-[#a52a2a] text-white px-6 py-4">
+          <h2 className="text-xl font-semibold">Modifier l'utilisateur</h2>
         </div>
-      ))}
-
-      <div className="mb-3">
-        <label className="block mb-1">Rôle</label>
-        <select name="role" value={formData.role} onChange={handleChange} className="w-full border px-3 py-2 rounded">
-          <option value="">Sélectionner un rôle</option>
-          <option value="admin">Administrateur</option>
-          <option value="formateur">Formateur</option>
-          <option value="apprenant">Apprenant</option>
-        </select>
-        {errors.role && <p className="text-red-500 text-sm">{errors.role[0]}</p>}
+        
+        {loading && (
+          <div className="p-4 text-center">
+            <div className="inline-block w-8 h-8 border-4 border-[#a52a2a] border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-2 text-gray-600">Chargement...</p>
+          </div>
+        )}
+        
+        {error && (
+          <div className="p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+            <p>{error}</p>
+          </div>
+        )}
+        
+        <form onSubmit={handleSubmit} className="p-6">
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                <input
+                  type="text"
+                  name="nom"
+                  value={formData.nom || ''}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                />
+                {fieldErrors.nom && <p className="text-red-500 text-xs mt-1">{fieldErrors.nom[0]}</p>}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+                <input
+                  type="text"
+                  name="prenom"
+                  value={formData.prenom || ''}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                />
+                {fieldErrors.prenom && <p className="text-red-500 text-xs mt-1">{fieldErrors.prenom[0]}</p>}
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email || ''}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+              />
+              {fieldErrors.email && <p className="text-red-500 text-xs mt-1">{fieldErrors.email[0]}</p>}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Quartier</label>
+              <input
+                type="text"
+                name="quartier"
+                value={formData.quartier || ''}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+              />
+              {fieldErrors.quartier && <p className="text-red-500 text-xs mt-1">{fieldErrors.quartier[0]}</p>}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Date de naissance</label>
+              <input
+                type="date"
+                name="date_naissance"
+                value={formData.date_naissance || ''}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+              />
+              {fieldErrors.date_naissance && <p className="text-red-500 text-xs mt-1">{fieldErrors.date_naissance[0]}</p>}
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Rôle</label>
+                <select 
+                  name="role" 
+                  value={formData.role || ''} 
+                  onChange={handleChange} 
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                >
+                  <option value="">Sélectionner</option>
+                  <option value="admin">Administrateur</option>
+                  <option value="formateur">Formateur</option>
+                  <option value="apprenant">Apprenant</option>
+                </select>
+                {fieldErrors.role && <p className="text-red-500 text-xs mt-1">{fieldErrors.role[0]}</p>}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+                <select 
+                  name="statut" 
+                  value={formData.statut || ''} 
+                  onChange={handleChange} 
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#a52a2a] focus:border-[#a52a2a]"
+                >
+                  <option value="">Sélectionner</option>
+                  <option value="actif">Actif</option>
+                  <option value="inactif">Inactif</option>
+                </select>
+                {fieldErrors.statut && <p className="text-red-500 text-xs mt-1">{fieldErrors.statut[0]}</p>}
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+              disabled={loading}
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-[#a52a2a] hover:bg-[#cc7722] text-white rounded-md transition-colors"
+              disabled={loading}
+            >
+              {loading ? 'Enregistrement...' : 'Enregistrer'}
+            </button>
+          </div>
+        </form>
       </div>
-
-      <div className="mb-4">
-        <label className="block mb-1">Statut</label>
-        <select name="statut" value={formData.statut} onChange={handleChange} className="w-full border px-3 py-2 rounded">
-          <option value="">Sélectionner un statut</option>
-          <option value="actif">Actif</option>
-          <option value="inactif">Inactif</option>
-        </select>
-        {errors.statut && <p className="text-red-500 text-sm">{errors.statut[0]}</p>}
-      </div>
-
-      <div className="flex justify-between">
-        <button type="button" onClick={onCancel} className="bg-gray-400 text-white px-4 py-2 rounded">Annuler</button>
-        <button type="submit" className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
-          Enregistrer
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
 

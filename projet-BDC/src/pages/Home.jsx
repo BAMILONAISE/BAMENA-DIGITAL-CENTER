@@ -61,9 +61,9 @@ function Home() {
             <div>
               <h3 className="text-[#a52a2a] font-semibold text-2xl mt-5 mb-3 ">Multimédia</h3>
               <p className="text-gray-500 text-sm mb-4">Maîtrisez les outils de création multimédia pour produire des contenus professionnels.</p>
-              <p className="text-gray-500 text-sm  flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Montage vidéo</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Animation 2D/3D</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Production audio</p>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Montage vidéo</div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Animation 2D/3D</div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Production audio</div>
               <div className="mt-7 mb-7 justify-items-center transition-transform transform hover:scale-105">
                 <a href="/courses" className="text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-1.5 font-medium ">
                   Voir les cours </a>
@@ -77,11 +77,17 @@ function Home() {
             <div>
               <h3 className="text-[#a52a2a] font-semibold text-2xl mt-5 mb-3 ">Developpement Web</h3>
               <p className="text-gray-500 text-sm mb-4">Apprenez à créer des sites web et des applications modernes et performants.</p>
-              <p className="text-gray-500 text-sm  flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> HTML, CSS, JavaScript</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Frameworks modernes</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Bases de données</p>
-              <div className="mt-7 mb-7 justify-items-center transition-transform transform hover:scale-105">
-                <a href="/courses" className="text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-1.5 font-medium ">
+              <div className="text-gray-500 text-sm flex items-center mt-2">
+                <span className="rounded-full bg-[#a52a2a] p-1 mr-3"><FaCheck className="text-white" /></span> HTML, CSS, JavaScript
+              </div>
+              <div className="text-gray-500 text-sm flex items-center mt-2">
+                <span className="rounded-full bg-[#a52a2a] p-1 mr-3"><FaCheck className="text-white" /></span> Frameworks modernes
+              </div>
+              <div className="text-gray-500 text-sm flex items-center mt-2">
+                <span className="rounded-full bg-[#a52a2a] p-1 mr-3"><FaCheck className="text-white" /></span> Bases de données
+              </div>
+              <div className="mt-7  flex justify-end  transition-transform transform hover:scale-105">
+                <a href="/courses" className="text-white border bg-[#a52a2a] text-center rounded-md  px-3 py-1.5 font-medium ">
                   Voir les cours </a>
               </div>
             </div>
@@ -92,9 +98,9 @@ function Home() {
             <div>
               <h3 className="text-[#a52a2a] font-semibold text-2xl mt-5 mb-3 ">Design Web</h3>
               <p className="text-gray-500 text-sm mb-4">Développez vos compétences en design pour créer des interfaces attrayantes .</p>
-              <p className="text-gray-500 text-sm  flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Graphic Dessign</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> UI/UX Design </p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Outils et Principes de design</p>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Graphic Dessign</div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> UI/UX Design </div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Outils et Principes de design</div>
               <div className="mt-7 mb-7 justify-items-center transition-transform transform hover:scale-105">
                 <a href="/courses" className="text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-1.5 font-medium ">
                   Voir les cours </a>
@@ -110,9 +116,9 @@ function Home() {
             <div>
               <h3 className="text-[#a52a2a] font-semibold text-2xl mt-5 mb-3 ">Digital & Marketing</h3>
               <p className="text-gray-500 text-sm mb-4">Maîtrisez les stratégies digitales pour promouvoir efficacement vos produits et services.</p>
-              <p className="text-gray-500 text-sm  flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Marketing des médias sociaux  </p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> SEO et SEM</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Analyses de données</p>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Marketing des médias sociaux  </div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> SEO et SEM</div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Analyses de données</div>
               <div className="mt-7 mb-7 justify-items-center transition-transform transform hover:scale-105">
                 <a href="/courses" className="text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-1.5 font-medium ">
                   Voir les cours </a>
@@ -125,9 +131,9 @@ function Home() {
             <div>
               <h3 className="text-[#a52a2a] font-semibold text-2xl mt-5 mb-3 ">Langue NDA'A NDA'A </h3>
               <p className="text-gray-500 text-sm mb-4">Découvrez et apprenez la langue maternelle NDA'A NDA'A, un patrimoine culturel important.</p>
-              <p className="text-gray-500 text-sm  flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Bases de la langue</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Conversation courante</p>
-              <p className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Culture et traditions</p>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Bases de la langue</div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Conversation courante</div>
+              <div className="text-gray-500 text-sm flex items-center mt-2"><FaCheck className="text-[#a52a2a] mr-3" /> Culture et traditions</div>
               <div className="mt-7 mb-7 justify-items-center transition-transform transform hover:scale-105">
                 <a href="/courses" className="text-[#a52a2a] border border-[#a52a2a] text-center rounded-md px-3 py-1.5 font-medium ">
                   Voir les cours </a>

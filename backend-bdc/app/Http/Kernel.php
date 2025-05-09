@@ -39,14 +39,11 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            
-            // Ce middleware est crucial : il transforme les requêtes de React en requêtes "authentifiables"
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'check.status' => \App\Http\Middleware\CheckUserStatus::class,
-            'is_admin' => \App\Http\Middleware\IsAdmin::class,
             
 
             
@@ -73,5 +70,18 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'check.status' => \App\Http\Middleware\CheckUserStatus::class,
+        'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }
+// config/cors.php
+return [
+    'paths' => ['api/*'],
+    'allowed_methods' => ['*'],
+    'allowed_origins' => ['http://localhost:3000', 'http://localhost:8000'], // Ajoutez votre origine frontend
+    'allowed_origins_patterns' => [],
+    'allowed_headers' => ['*'],
+    'exposed_headers' => [],
+    'max_age' => 0,
+    'supports_credentials' => true, // Important pour les cookies et l'authentification
+];

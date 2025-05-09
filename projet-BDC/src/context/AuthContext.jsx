@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchUser } from "../services/api";
+import { getMe, logout } from "../services/api";
 
 // Création du contexte
 const AuthContext = createContext();
@@ -12,9 +12,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const userData = await fetchUser();
+        console.log('AuthContext: Tentative de récupération des données utilisateur');
+        const userData = await getMe();
+        console.log('AuthContext: Données utilisateur récupérées', userData);
         setUser(userData);
       } catch (err) {
+        console.log('AuthContext: Erreur lors de la récupération des données utilisateur', err);
         setUser(null); // Pas connecté
       } finally {
         setLoading(false);
@@ -23,9 +26,33 @@ export function AuthProvider({ children }) {
 
     loadUser();
   }, []);
+  
+  // Fonction pour mettre à jour l'utilisateur après connexion
+  const updateUser = async () => {
+    try {
+      const userData = await getMe();
+      setUser(userData);
+      return userData;
+    } catch (err) {
+      console.error('Erreur lors de la mise à jour de l\'utilisateur:', err);
+      return null;
+    }
+  };
+  
+  // Fonction pour déconnecter l'utilisateur
+  const logoutUser = async () => {
+    try {
+      await logout();
+      setUser(null);
+      return true;
+    } catch (err) {
+      console.error('Erreur lors de la déconnexion:', err);
+      return false;
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, updateUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

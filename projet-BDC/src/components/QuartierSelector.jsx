@@ -16,7 +16,6 @@ const QuartierSelector = ({ quartier, setQuartier, quartierAutre, setQuartierAut
   return (
     <div className="mb-4">
       <label htmlFor="quartier" className="block text-sm font-medium text-black px-1 ">
-        Quartier à Bamena
       </label>
       <select
         id="quartier"

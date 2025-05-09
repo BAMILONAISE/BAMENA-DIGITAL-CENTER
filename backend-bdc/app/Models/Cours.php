@@ -14,6 +14,17 @@ class Cours extends Model
         'titre',
         'description',
         'video_url',
+        'contenu',
+        'image_couverture',
+        'categorie',
+        'niveau',
+        'duree_estimee',
+        'tags',
+        'statut',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
     ];
 
     // Relation avec User

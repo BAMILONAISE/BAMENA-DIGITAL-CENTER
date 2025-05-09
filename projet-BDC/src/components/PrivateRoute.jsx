@@ -1,17 +1,18 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const PrivateRoute = ({ children }) => {
-  // Vérifie si le token est présent dans localStorage
-  const token = localStorage.getItem("token");
+const PrivateRoute = () => {
+  const { user } = useAuth();
+  // Vérifie si l'utilisateur est connecté
+  const isAuthenticated = user || localStorage.getItem("token");
 
-  // Si pas de token, redirige vers la page de connexion
-  if (!token) {
-    return <Navigate to="/login" />;
+  // Si pas authentifié, redirige vers la page de connexion
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
-  // Sinon, affiche la page demandée
-  return children;
+  // Sinon, affiche les routes enfants via Outlet
+  return <Outlet />;
 };
 
 export default PrivateRoute;

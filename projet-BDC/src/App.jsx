@@ -1,70 +1,87 @@
-// import { useState } from 'react'
+/**
+ * Application principale de gestion de cours
+ * Cette application permet la gestion de cours avec différents rôles :
+ * - Admin : Gestion complète des utilisateurs et des cours
+ * - Formateur : Création et gestion de ses cours
+ * - Apprenant : Accès aux cours et suivi de formation
+ */
+
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import About from './pages/About';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Parametres from './pages/Parametres';
-import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Login from './pages/Login';
-
 import DashboardAdmin from './components/DashboardAdmin';
 import DashboardFormateur from './components/DashboardFormateur';
 import DashboardApprenant from './components/DashboardApprenant';
-
-import Register1 from './pages/Register1';
 import './index.css';
-import AjoutUtilisateur from './pages/admin/AjoutUtilisateur';
-import PageAjoutCours from './pages/AjoutCours';
 import DashboardLayout from './components/DashboardLayout';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminUserEdit from './pages/admin/AdminUserEdit';
+import AdminCours from './pages/admin/AdminCours';
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
-
-
-
-
-
+import AjoutCours from './pages/AjoutCours';
+import MesCours from './pages/formateur/MesCours';
+import CoursList from './pages/apprenant/CoursList';
+import CourseDetail from './pages/CourseDetail';
+import CoursesSection from './components/CoursesSection';
 
 function App() {
 
-
   return (
+    // AuthProvider permet de gérer l'état d'authentification global
     <AuthProvider>
-     <Router>
-      <Routes>
-        <Route path='/about' element={<About/> }/>
-        <Route path='/' element={<Home/> }/>
-        <Route path='/contact' element={<Contact/> }/>
-        {/* <Route path='/dashboard' element={<Dashboard/> }/> */}
-        <Route path="/parametres" element={<Parametres/>} />
+      <Router>
+        <Routes>
+          {/* Routes publiques accessibles sans authentification */}
+          <Route path='/' element={<Home />} />
+          <Route path='/about' element={<About />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/courses' element={<CoursesSection />} />
+          <Route path='/cours/:id' element={<CourseDetail />} />
 
-        <Route path="/register" element={<Register/>} />
-        <Route path="/register1" element={<Register1/>} />
-        <Route path="/register1" element={<Register1/>} />
-        <Route path="/admin/ajouteruser" element={<AjoutUtilisateur />} />    
-        <Route path="/admin/ajoutcours" element={<PageAjoutCours />} />  
-
-         {/* Page de connexion */}
-        <Route path="/login" element={<Login />} />
-
-         {/* Dashboards */}
-      <PrivateRoute>
-       <Route path="/dashboard-admin" element={<DashboardAdmin />} />
-        <Route path="/dashboard-formateur" element={<DashboardFormateur />} />
-        <Route path="/dashboard-apprenant" element={<DashboardApprenant />} /> 
-
-        <Route path="/dashboard" element={<DashboardLayout />} />
-        <Route path="/users" element={<AdminUsers />} />
-        </PrivateRoute>
-      </Routes>
-     </Router>
-     </AuthProvider>
+          {/* Routes protégées nécessitant une authentification */}
+          <Route element={<PrivateRoute />}>
+            {/* Layout commun pour toutes les pages du dashboard */}
+            <Route path='/dashboard' element={<DashboardLayout />}>
+              {/* Redirection par défaut vers le dashboard apprenant */}
+              <Route index element={<Navigate to="/dashboard/apprenant" />} />
+              
+              {/* Routes spécifiques pour chaque rôle */}
+              <Route path='admin' element={<DashboardAdmin />} />
+              <Route path='formateur' element={<DashboardFormateur />} />
+              <Route path='apprenant' element={<DashboardApprenant />} />
+              
+              {/* Routes de gestion des utilisateurs (admin) */}
+              <Route path='users' element={<AdminUsers />} />
+              <Route path='users/:id/edit' element={<AdminUserEdit />} />
+              
+              {/* Routes de gestion des cours */}
+              <Route path='ajoutcours' element={<AjoutCours />} />
+              <Route path='parametres' element={<Parametres />} />
+              <Route path='admin/cours' element={<AdminCours />} />
+              <Route path='formateur/mes-cours' element={<MesCours />} />
+              <Route path='apprenant/cours' element={<CoursList />} />
+              <Route path='cours/:id' element={<CourseDetail />} />
+              <Route path='cours/:id/edit' element={<AjoutCours />} />
+            </Route>
+          </Route>
+          
+          {/* Routes de redirection pour la compatibilité avec les anciens liens */}
+          <Route path="/dashboard-admin" element={<Navigate to="/dashboard/admin" />} />
+          <Route path="/dashboard-formateur" element={<Navigate to="/dashboard/formateur" />} />
+          <Route path="/dashboard-apprenant" element={<Navigate to="/dashboard/apprenant" />} />
+          <Route path="/cours" element={<Navigate to="/courses" />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   
   )
 }
 
-
 export default App
-export const fetchMe = () => API.get('/me');
-

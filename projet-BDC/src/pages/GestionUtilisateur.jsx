@@ -1,9 +1,11 @@
 // src/pages/GestionUtilisateurs.jsx
 
 import { useEffect, useState } from 'react';
-import api from '../apii';
+import api from '../api';
+import { useAuth } from '../context/AuthContext';
 
 function GestionUtilisateurs() {
+  const { user } = useAuth();
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
