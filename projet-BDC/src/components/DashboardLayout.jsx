@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaUserCircle, FaChalkboardTeacher, FaUserGraduate, FaUserShield, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import Navbar from "./Navbar";
 
 const DashboardLayout = () => {
   const { user, logoutUser } = useAuth();
@@ -49,7 +50,9 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div> <Navbar/>
+    <div className="flex h-screen bg-gray-100"> 
+   
       {/* Sidebar */}
       <div className={`bg-[#a52a2a] text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition duration-200 ease-in-out z-10`}>
         <div className="flex items-center space-x-2 px-4">
@@ -148,6 +151,8 @@ const DashboardLayout = () => {
         </main>
       </div>
     </div>
+    </div>
+    
   );
 };
 
