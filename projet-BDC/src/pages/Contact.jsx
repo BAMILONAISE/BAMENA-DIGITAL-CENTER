@@ -120,7 +120,7 @@ function Contact() {
                   <div>
                     <h3 className="font-semibold text-gray-900 text-lg mb-1">Email</h3>
                     <a href="mailto:info@bamenadigital.center" className="text-gray-600 hover:text-[#a52a2a] transition-colors">
-                      info@bamenadigital.com
+                      infos@bdc.com
                     </a>
                   </div>
                 </div>
@@ -132,8 +132,8 @@ function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 text-lg mb-1">Téléphone</h3>
-                    <a href="tel:+237123456789" className="text-gray-600 hover:text-[#a52a2a] transition-colors">
-                      +237 123 456 789
+                    <a href="tel:+237680994956" className="text-gray-600 hover:text-[#a52a2a] transition-colors">
+                      +237 680 994 956
                     </a>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ function Contact() {
               
               {/* Carte ou image stylisée */}
               <div className="mt-10 h-48 bg-gray-200 rounded-lg overflow-hidden opacity-75 hover:opacity-100 transition-opacity">
-                {/* Ici, vous pourriez intégrer une carte Google Maps ou une image de localisation */}
+                <img src="carte.png" alt="ici la carte" />
                 <div className="w-full h-full flex items-center justify-center bg-[#a52a2a] bg-opacity-10">
                   <p className="text-gray-600 font-medium">Carte de localisation</p>
                 </div>

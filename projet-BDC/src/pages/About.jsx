@@ -28,7 +28,7 @@ function About() {
         <section className="py-6 sm:py-10 md:py-16">
           <div className="container mx-auto">
             <div className="mb-6 sm:mb-10 text-center">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#a52a2a]">À propos de Nous</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#a52a2a] drop-shadow-md bg-gradient-to-r from-[#a52a2a] to-[#cc7722] py-20">À propos de Nous</h2>
             </div>
             <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6 text-center max-w-4xl mx-auto">
               Bamena Digital Center (BDC) est une initiative éducative innovante, créée pour répondre aux besoins

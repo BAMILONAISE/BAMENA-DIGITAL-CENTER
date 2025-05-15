@@ -257,7 +257,7 @@ const CourseSection = () => {
           {/* Carte 1 */}
           <div className="bg-white shadow rounded-2xl p-6 flex flex-col items-start gap-4 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] flex-shrink-0">
             <div className="w-full flex justify-center">
-              <img src="/video-thumbnail.svg" alt="" className="h-40 object-contain" />
+              <img src="/logo.png" alt="" className="h-40 object-contain" />
             </div>
             <h2 className="text-xl font-bold text-[#9f3e1c]">Introduction au montage vidéo</h2>
             <p className="text-gray-600">Apprenez les bases du montage vidéo professionnel</p>
@@ -279,7 +279,7 @@ const CourseSection = () => {
           {/* Carte 2 */}
           <div className="bg-white shadow rounded-2xl p-6 flex flex-col items-start gap-4 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] flex-shrink-0">
             <div className="w-full flex justify-center">
-              <img src="/html-css-thumbnail.svg" alt="" className="h-40 object-contain" />
+              <img src="/chevre.png"  alt="" className="h-40 object-contain" />
             </div>
             <h2 className="text-xl font-bold text-[#9f3e1c]">Introduction au NDA'A NDA'A</h2>
             <p className="text-gray-600">Découvrez les bases notre langue maternelle</p>
@@ -300,7 +300,7 @@ const CourseSection = () => {
           {/* Carte 3 */}
           <div className="bg-white shadow rounded-2xl p-6 flex flex-col items-start gap-4 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] flex-shrink-0">
             <div className="w-full flex justify-center">
-              <img src="/uiux-thumbnail.svg" alt="" className="h-40 object-contain" />
+              <img src="/ligne.png" alt="" className="h-40 object-contain" />
             </div>
             <h2 className="text-xl font-bold text-[#9f3e1c]">Principes de l'UI/UX Design</h2>
             <p className="text-gray-600">Créez des interfaces utilisateur attrayantes</p>
@@ -320,7 +320,7 @@ const CourseSection = () => {
           {/* Carte 4 */}
           <div className="bg-white shadow rounded-2xl p-6 flex flex-col items-start gap-4 w-[280px] sm:w-[320px] md:w-[350px] lg:w-[380px] flex-shrink-0">
             <div className="w-full flex justify-center">
-              <img src="/html-css-thumbnail.svg" alt="" className="h-40 object-contain" />
+              <img src="/code.png" alt="" className="h-40 object-contain" />
             </div>
             <h2 className="text-xl font-bold text-[#9f3e1c]">HTML & CSS pour débutants</h2>
             <h2 className="text-xl font-bold text-[#9f3e1c]"></h2>

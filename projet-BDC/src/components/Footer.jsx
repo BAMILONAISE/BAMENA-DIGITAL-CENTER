@@ -107,11 +107,12 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <FaPhoneAlt className="text-[#a52a2a] mr-3" />
-                <span className="text-gray-400">+237 6XX XXX XXX</span>
+                <span className="text-gray-400">+237 680 994 956</span>
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="text-[#a52a2a] mr-3" />
-                <span className="text-gray-400">contact@bdc.com</span>
+                
+                <span className="text-gray-400">infos@bdc.com</span>
               </li>
             </ul>
           </div>
